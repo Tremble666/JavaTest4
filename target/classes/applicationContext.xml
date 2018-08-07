@@ -20,4 +20,10 @@
 
 	<bean id="FilmServiceImpl" class="com.hand.api.service.impl.FilmServiceImpl"/>
 
+	<!--sPRING容器启动和关闭-->
+	<bean id = "contextClose" class="com.hand.infra.config.ContextClose"></bean>
+	<bean id = "contextStart" class="com.hand.infra.config.ContextStart"></bean>
+
+
+
 </beans>

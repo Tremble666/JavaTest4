@@ -60,7 +60,6 @@
 		<property name="basePackage" value="com.hand.infra.mapper"/>
 	</bean>
 
-
 	<!--Event增强-->
 	<!-- 使用sping中的aop所需要的配置 -->
 	<aop:config>

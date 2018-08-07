@@ -14,4 +14,10 @@
 		<!--延迟加载的触发方法-->
 		<setting name="lazyLoadTriggerMethods" value="clone"/>
 	</settings>
+
+	<plugins>
+		<plugin interceptor="com.hand.infra.util.MyCostPlugin">
+		</plugin>
+	</plugins>
 </configuration>
+

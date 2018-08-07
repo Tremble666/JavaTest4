@@ -16,7 +16,6 @@ public class Application {
 
 
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        System.out.println("Context Start");
         FilmService filmService =context.getBean(FilmService.class);
         Film f = new Film();
         f.setTitle(title);
@@ -45,6 +44,7 @@ public class Application {
 
 
         System.out.println(f);
-        System.out.println("Context Stop");
+
+        ((ClassPathXmlApplicationContext) context).close();
     }
 }

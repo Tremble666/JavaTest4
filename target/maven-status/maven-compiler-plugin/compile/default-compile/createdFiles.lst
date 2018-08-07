@@ -6,3 +6,4 @@ com\hand\infra\util\EventUtil.class
 com\hand\infra\config\ContextClose.class
 com\hand\infra\config\ContextStart.class
 com\hand\domain\entity\Film.class
+com\hand\infra\util\MyCostPlugin.class
