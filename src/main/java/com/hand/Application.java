@@ -1,8 +1,6 @@
 package com.hand;
 
-import com.hand.api.service.EmployeeService;
 import com.hand.api.service.FilmService;
-import com.hand.domain.entity.Employee;
 import com.hand.domain.entity.Film;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -36,7 +34,16 @@ public class Application {
         f.setRating("PG");
         f.setSpecial_features("Commentaries");
         f.setLast_update("2006-02-15 05:03:42");
+
+        //两次插入，第一次失败回滚，第二次成功
+        try {
+            filmService.save(f);
+        } catch (Exception e) {
+            System.out.println("roll back!");
+        }
         filmService.save(f);
+
+
         System.out.println(f);
         System.out.println("Context Stop");
     }

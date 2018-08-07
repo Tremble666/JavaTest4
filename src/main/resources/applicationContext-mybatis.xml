@@ -44,6 +44,7 @@
 			<tx:method name="query*" read-only="true"/>
 			<tx:method name="select*" read-only="true"/>
 			<tx:method name="list*" read-only="true"/>
+			<!--上述方法无需开启事务，除了上边的方法都要开启-->
 			<tx:method name="*"/>
 		</tx:attributes>
 	</tx:advice>
