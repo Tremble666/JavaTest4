@@ -37,7 +37,7 @@ public class Application {
 
         //两次插入，第一次失败回滚，第二次成功
         try {
-            filmService.save(f);
+            filmService.errorsave(f);
         } catch (Exception e) {
             System.out.println("roll back!");
         }
