@@ -1,0 +1,12 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hand.infra.mapper.EmployeeMapper">
+    <select id="get" resultType="Employee">
+        select * from Employee where id = #{id}
+    </select>
+    <insert id="save">
+        insert into Employee(name,dept_id) values(#{name},#{dept_id})
+    </insert>
+</mapper>

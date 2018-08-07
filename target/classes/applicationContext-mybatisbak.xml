@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop" xmlns:jee="http://www.springframework.org/schema/jee"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<!-- 1.导入外部文件 -->
+	<context:property-placeholder location="dbbak.properties" />
+
+	<!-- 2.数据源 -->
+	<bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+	
+	<!-- 3.sessionFactory -->
+	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="mybatis.cfg.xml" />
+		<property name="typeAliasesPackage" value="com.hand.domain.entity" />
+		<property name="mapperLocations" value="com/hand/infra/mapper/*Mapper.xml" />
+	</bean>
+	
+	<!-- 4.事务模板 -->
+	<!-- what:事务管理器 -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- when:事务增强的时机 -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true"/>
+			<tx:method name="query*" read-only="true"/>
+			<tx:method name="select*" read-only="true"/>
+			<tx:method name="list*" read-only="true"/>
+			<tx:method name="*"/>
+		</tx:attributes>
+	</tx:advice>
+	<!-- 5.where:AOP相关配置 -->
+	<aop:config>
+		<aop:pointcut id="txPoint"
+			expression="execution(* com.hand.api.service.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPoint" />
+	</aop:config>
+
+	<!-- Mapper扫描 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.hand.infra.mapper"/>
+	</bean>
+
+	<!--Event增强-->
+	<!-- 使用sping中的aop所需要的配置 -->
+	<aop:config>
+		<!-- what:做什么增强(此处是做事务增强) -->
+		<aop:aspect ref="eventUtil">
+			<!-- where:在那些包的那些类下边做增强 -->
+			<aop:pointcut id="txPoint"
+						  expression="execution(* com.hand.api.service.*.*(..))" />
+			<!-- when:在什么时候切入(在业务方法之前/之后...) -->
+			<aop:before method="BeforeInsertFilmEvent" pointcut-ref="txPoint" />
+			<aop:after method="AfterInsertFilmEvent" pointcut-ref="txPoint"/>
+		</aop:aspect>
+	</aop:config>
+
+	<bean id="eventUtil" class="com.hand.infra.util.EventUtil"></bean>
+</beans>

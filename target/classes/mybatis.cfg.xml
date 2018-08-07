@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!--设置日志使用log4j-->
+		<setting name="logImpl" value="LOG4J"/>
+
+		<!--设置开启延迟加载-->
+		<setting name="lazyLoadingEnabled" value="true"/>
+		<!--设置不要积极的去查询关联对象-->
+		<setting name="aggressiveLazyLoading" value="false"/>
+		<!--延迟加载的触发方法-->
+		<setting name="lazyLoadTriggerMethods" value="clone"/>
+	</settings>
+</configuration>
